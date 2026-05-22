@@ -1,0 +1,232 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>A.D.E.C.K | Visual Discovery Engine</title>
+    
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🅰️</text></svg>">
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Playfair+Display:ital,wght@0,600;0,700;1,600&display=swap" rel="stylesheet">
+    
+    <link href="https://cdn.jsdelivr.net/npm/remixicon@3.5.0/fonts/remixicon.css" rel="stylesheet">
+
+    <link rel="stylesheet" href="style.css">
+
+    <style>
+        .progress-container {
+            width: 100%; height: 4px; background: #f2f2f2;
+            position: fixed; top: 0; left: 0; z-index: 200;
+        }
+        .progress-bar {
+            height: 4px; background: var(--accent); width: 0%;
+            transition: width 0.1s;
+        }
+        .social-links i {
+            font-size: 20px; margin: 0 10px; color: #555; cursor: pointer; transition: 0.2s;
+        }
+        .social-links i:hover { color: var(--accent); transform: scale(1.2); }
+    </style>
+</head>
+<body>
+
+    <div class="progress-container">
+        <div class="progress-bar" id="myBar"></div>
+    </div>
+
+    <nav>
+        <a href="#" class="logo" onclick="location.reload()">
+            <div class="logo-symbol">A</div>
+            <span>A.D.E.C.K</span>
+        </a>
+        
+        <div class="search-bar">
+            <i class="ri-search-line"></i>
+            <input type="text" id="searchInput" placeholder="Search inspiration (e.g., Porsche, Japan)...">
+        </div>
+
+        <div class="nav-actions">
+            <a href="#" class="nav-link active" onclick="location.reload()">Home</a>
+            <a href="#" class="nav-link" onclick="openAbout()">About</a>
+            <div class="profile-toggle" title="Your Profile" onclick="openProfile()">AD</div>
+        </div>
+    </nav>
+
+    <header class="hero">
+        <h1>Curating the <em>Finest</em> Aesthetics.</h1>
+        <p>A visual discovery engine for automotive, architecture, and lifestyle.</p>
+        
+        <div class="filter-container">
+            <button class="filter-btn active" onclick="filterCategory('all')">All</button>
+            <button class="filter-btn" onclick="filterCategory('cars')">Automotive</button>
+            <button class="filter-btn" onclick="filterCategory('architecture')">Architecture</button>
+            <button class="filter-btn" onclick="filterCategory('travel')">Travel</button>
+            <button class="filter-btn" onclick="filterCategory('fashion')">Fashion</button>
+        </div>
+    </header>
+
+    <main class="gallery-container">
+        <div class="masonry-grid" id="galleryWrapper">
+            </div>
+        
+        <div class="load-more-container">
+            <button id="loadMoreBtn" class="btn-secondary">Load More Inspiration</button>
+        </div>
+    </main>
+
+    <footer>
+        <div class="footer-content">
+            <h3>A.D.E.C.K Project</h3>
+            <p>Dibuat dengan dedikasi untuk Tugas Akhir Web Development.</p>
+            
+            <div class="team-names">
+                <span>Abraham Nayaka Ariyanto</span> &bull; 
+                <span>Ammar Zain Henry Noer</span> &bull; 
+                <span>Christoforus Beshara Utomo</span> &bull; <br>
+                <span>Matteo Javier Sianturi</span> &bull; 
+                <span>Rafael Hasiholan Bimantara</span> &bull; 
+                <span>Rafael Raditya Dwi Anggoro</span>
+            </div>
+
+            <div class="social-links" style="margin-top: 20px;">
+                <i class="ri-instagram-line" title="Instagram"></i>
+                <i class="ri-twitter-x-line" title="Twitter/X"></i>
+                <i class="ri-github-fill" title="GitHub"></i>
+                <i class="ri-linkedin-fill" title="LinkedIn"></i>
+            </div>
+
+            <p class="copyright" style="margin-top: 20px;">&copy; 2025 A.D.E.C.K </p>
+        </div>
+    </footer>
+
+    <button id="scrollToTopBtn" title="Go to top">
+        <i class="ri-arrow-up-line"></i>
+    </button>
+
+    <div class="modal-overlay" id="modal">
+        <div class="modal-card">
+            <button class="close-btn" onclick="closeModal()"><i class="ri-close-line"></i></button>
+            
+            <div class="modal-left">
+                <img src="" id="modalImg" alt="Detail View">
+            </div>
+            
+            <div class="modal-right">
+                <div class="modal-top-actions">
+                    <div class="icon-group">
+                        <button class="icon-btn" title="Download Image"><i class="ri-download-2-line"></i></button>
+                        <button class="icon-btn" title="Share"><i class="ri-share-forward-line"></i></button>
+                    </div>
+                    <button class="btn-primary" id="modalSaveBtn">Save</button>
+                </div>
+
+                <div class="modal-details">
+                    <h2 id="modalTitle">Title Here</h2>
+                    <p id="modalDesc">Description here.</p>
+                    
+                    <div class="creator-badge">
+                        <div class="avatar">A</div>
+                        <div>
+                            <strong>A.D.E.C.K Curated</strong>
+                            <span>120k Followers</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="modal-comments">
+                    <h4>Comments (3)</h4>
+                    <div id="commentList"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal-overlay" id="profileModal">
+        <div class="modal-card profile-card">
+            <button class="close-btn" onclick="closeProfile()"><i class="ri-close-line"></i></button>
+            
+            <div class="profile-header">
+                <div class="profile-avatar-large">AD</div>
+                <h2>A.D.E.C.K User</h2>
+                <p>Curating aesthetics since 2025</p>
+                <div class="profile-stats">
+                    <span><strong>12</strong> Following</span>
+                    <span id="savedCount"><strong>0</strong> Saved</span>
+                </div>
+            </div>
+
+            <div class="profile-tabs">
+                <button class="active">Saved Collection</button>
+            </div>
+
+            <div class="profile-grid" id="profileGrid">
+                </div>
+        </div>
+    </div>
+
+    <div class="modal-overlay" id="aboutModal">
+        <div class="modal-card about-card">
+            <button class="close-btn" onclick="closeAbout()"><i class="ri-close-line"></i></button>
+            
+            <div class="about-content">
+                <div class="about-logo">A</div>
+                <h1>About A.D.E.C.K</h1>
+                <p class="about-desc">
+                    A.D.E.C.K 
+                </p>
+
+                <div class="team-section">
+                    <h3>Pembuat Website</h3>
+                    <div class="team-grid">
+                        <div class="team-member"><span>Abraham Nayaka A.</span></div>
+                        <div class="team-member"><span>Ammar Zain H. N.</span></div>
+                        <div class="team-member"><span>Christoforus B. U.</span></div>
+                        <div class="team-member"><span>Matteo Javier S.</span></div>
+                        <div class="team-member"><span>Rafael Hasiholan B.</span></div>
+                        <div class="team-member"><span>Rafael Raditya D. A.</span></div>
+                    </div>
+                </div>
+
+                <div class="tech-stack">
+                    <small>Built with HTML.</small>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="toast">Saved to Profile!</div>
+
+    <script src="script.js"></script>
+
+    <script>
+        // Logika untuk Scroll Progress Bar (Garis di atas layar)
+        window.onscroll = function() {
+            updateProgressBar();
+            updateScrollToTop();
+        };
+
+        function updateProgressBar() {
+            var winScroll = document.body.scrollTop || document.documentElement.scrollTop;
+            var height = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+            var scrolled = (winScroll / height) * 100;
+            document.getElementById("myBar").style.width = scrolled + "%";
+        }
+
+        // Logika Scroll To Top Button
+        var scrollBtn = document.getElementById("scrollToTopBtn");
+        function updateScrollToTop() {
+            if (document.body.scrollTop > 300 || document.documentElement.scrollTop > 300) {
+                scrollBtn.classList.add("show");
+            } else {
+                scrollBtn.classList.remove("show");
+            }
+        }
+        
+        scrollBtn.addEventListener("click", function() {
+            window.scrollTo({ top: 0, behavior: "smooth" });
+        });
+    </script>
+</body>
+</html>
